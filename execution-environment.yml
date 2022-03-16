@@ -9,6 +9,7 @@ additional_build_steps:
     - RUN alternatives --set python /usr/bin/python3
     - RUN pip3 uninstall --yes ansible-runner && pip3 install ansible-runner
     - RUN pip3 uninstall --yes freeipa && pip3 install freeipa
+    - RUN pip3 uninstall --yes python_freeipa && pip3 install python_freeipa
     - COPY --from=quay.io/project-receptor/receptor:latest /usr/bin/receptor /usr/bin/receptor
     - RUN mkdir -p /var/run/receptor
     - USER 1000
