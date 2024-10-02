@@ -13,6 +13,7 @@ my 5 cents
 Enjoy Chris
 
 ## Links
+* https://github.com/ansible/awx-ee/tree/devel
 * https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.1/html/ansible_navigator_creator_guide/index
 * https://docs.ansible.com/ansible/devel/getting_started_ee/build_execution_environment.html
 * https://ansible.readthedocs.io/projects/navigator/
