@@ -1,17 +1,36 @@
----
-version: 1
+# execution-environment/execution-environment.yml
+version: 3
+images:
+  base_image:
+    name: quay.io/centos/centos:stream9
+
 dependencies:
+  python_interpreter:
+    package_system: python3.11
+    python_path: /usr/bin/python3.11
+
+  ansible_core:
+    # Require minimum of 2.15 to get ansible-inventory --limit option
+    package_pip: ansible-core>=2.15.0rc2,<2.16
+
+  ansible_runner:
+    package_pip: ansible-runner
+
+  system:
+  - openssh-clients
+  - sshpass
+
   galaxy: requirements.yml
+  system: binddep.txt
   python: requirements.txt
-  system: bindep.txt
+
 additional_build_steps:
-  append:
-    - RUN alternatives --set python /usr/bin/python3
-    - RUN pip3 uninstall --yes ansible-runner && pip3 install ansible-runner
+  append_base:
     - RUN pip3 uninstall --yes python_freeipa && pip3 install python_freeipa
-    - COPY --from=quay.io/project-receptor/receptor:latest /usr/bin/receptor /usr/bin/receptor
+    - RUN $PYCMD -m pip install -U pip
+  append_final:
+    - COPY --from=quay.io/ansible/receptor:devel /usr/bin/receptor /usr/bin/receptor
     - RUN mkdir -p /var/run/receptor
-    - USER 1000
-    - ADD run.sh /run.sh
-    - CMD /run.sh
-    - RUN git lfs install
+    - RUN git lfs install --system
+    # SymLink `python` -> `python3.11`
+    - RUN alternatives --install /usr/bin/python python /usr/bin/python3.11 311

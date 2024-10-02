@@ -1,48 +1,68 @@
-# Custm Execution Environment for Ansible AWX
-You can find information about how to build a custom EE for AWX in my GitHub Repo of this image:    
-[joe-speedboat/ansible.ee](https://github.com/joe-speedboat/ansible.ee)
+# Ansible Execution Environment Adventures
+Due a retake of RH294, I stumbeled over ansible-navigator.   
+So for Day2 ops, you will need to create your custom environment.   
+Since I am a fan of open OpenSource, I tried to get a running ee with Rocky9.   
+Below you can find my notes about how to find the holy grail :-)   
 
-## Integrated Python modules ```execution-environment.yml```
-* python_freeipa
+As when I started with ansible ... years ago, it was not ready for enterprise, navigator is a great step forward, but not the end, just a beginning   
+EEs have to become handsome before a RHCE will really be able to use it, I guess its just a selling issue, that Red Hat pushes RHCEs into Ansible Navigator.   
+It would be better to teach the basics, so new admins understand what and why they do.   
 
-## Integrated Ansible Collections ```requirements.yml```
-* awx.awx
-* azure.azcollection
-* amazon.aws
-* theforeman.foreman
-* google.cloud
-* openstack.cloud
-* community.vmware
-* ovirt.ovirt
-* kubernetes.core
-* ansible.posix
-* ansible.windows
-* redhat_cop.tower_configuration
-* community.general
-* community.network
-* ansible.posix
-* fortinet.fortimanager
-* fortinet.fortios 
-    version: 1.1.7
+my 5 cents
 
-
-## getting started
-* RTFM
-* look into the files in this repo
-```
-# setup docker
-V=0.2
-pip3 install ansible-builder
-ansible-builder build --tag christian773/ee-idm:$V
-docker push christian773/ee-idm:$V
-
-
-## Use Case
-I used this ee, to test freeIPA inventory integraion, which is not native and needs a python script.
-With this inventory, I got it running: https://github.com/joe-speedboat/ansible.idm-inventory
-
+Enjoy Chris
 
 ## Links
-* https://docs.ansible.com/automation-controller/latest/html/userguide/execution_environments.html
-* https://weiyentan.github.io/2021/creating-execution-environments/
+* https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.1/html/ansible_navigator_creator_guide/index
+* https://docs.ansible.com/ansible/devel/getting_started_ee/build_execution_environment.html
+* https://ansible.readthedocs.io/projects/navigator/
+* https://ansible.readthedocs.io/projects/builder/en/latest/
+* https://ansible.readthedocs.io/projects/navigator/faq/#what-is-an-execution-environment
+
+## Install Prerequisites
+* Starting point is a Rocky 9 minimal
+```
+dnf update -y
+dnf install -y podman git curl
+dnf install -y python3 python3-pip
+
+echo 'export PATH=$PATH:~/.local/bin' >> ~/.bashrc
+source ~/.bashrc
+
+pip3 install --user ansible-navigator
+ansible-navigator --version
+```
+
+## Preparing template to create your own custom EE
+```
+pip3 install --user ansible-builder
+mkdir /srv/git
+chmod 700 /srv/git
+cd /srv/git
+git clone https://github.com/joe-speedboat/ansible.ee.git
+cd ansible.ee
+ls -l
+```
+
+## Build the custom EE
+* If you plan to upload docker image, ensure you have logged into registry, forex with: `podman login doc`
+* once you have modifed all the more or less self-explaining files to your needs, just run
+`build.sh`
+
+## Configure and test in ansible-navigator
+```
+test -f ~/.ansible-navigator.yml
+if [ $? -eq 0 ]
+then
+  echo NAVIGATOR CONFIG IS PRESENT, I DO NOT TOUCH
+  echo COMPARE ~/.ansible-navigator.yml AND ansible-navigator.yml
+else
+  cat ansible-navigator.yml > ~/.ansible-navigator.yml
+  echo NAVIGATOR CONFIG CREATED AT ~/.ansible-navigator.yml
+fi
+
+ansible-navigator images
+```
+* now you can use the `ansible-navigator` with every user, the image is online and navigator is in userspace
+* of course its nicer to have `ansible-navigator` installed with `rpm`, but enterprise is getting, opensource making :-)
 
