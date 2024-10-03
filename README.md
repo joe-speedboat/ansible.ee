@@ -64,6 +64,7 @@ fi
 
 ansible-navigator images
 ```
-* now you can use the `ansible-navigator` with every user, the image is online and navigator is in userspace
-* of course its nicer to have `ansible-navigator` installed with `rpm`, but enterprise is getting, opensource making :-)
+* Now you can use the `ansible-navigator` with every user, the image is online and navigator is in userspace
+* Of course its nicer to have `ansible-navigator` installed with `rpm`. 
+  But enterprise is taking, opensource is making :-)
 
