@@ -46,7 +46,7 @@ ls -l
 ```
 
 ## Build the custom EE
-* If you plan to upload docker image, ensure you have logged into registry, forex with: `podman login doc`
+* If you plan to upload docker image, ensure you have logged into registry, forex with: `podman login docker.io`
 * once you have modifed all the more or less self-explaining files to your needs, just run
 `build.sh`
 
