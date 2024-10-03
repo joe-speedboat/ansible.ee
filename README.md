@@ -73,7 +73,7 @@ ansible-navigator images
 sudo su -
 test -d /etc/ansible || mkdir /etc/ansible
 test -f /etc/ansible/ansible-navigator.yml || cat ansible-navigator.yml > /etc/ansible/ansible-navigator.yml
-echo "export ANSIBLE_NAVIGATOR_CONFIG=/etc/ansible/ansible-navigator.yml" > /etc/environment
+echo "export ANSIBLE_NAVIGATOR_CONFIG=/etc/ansible/ansible-navigator.yml" >> /etc/environment
 source /etc/environment
 ```
 
