@@ -50,7 +50,7 @@ ls -l
 * once you have modifed all the more or less self-explaining files to your needs, just run
 `build.sh`
 
-## Configure and test in ansible-navigator
+## Configure and test in ansible-navigator for user
 ```
 test -f ~/.ansible-navigator.yml
 if [ $? -eq 0 ]
@@ -67,4 +67,15 @@ ansible-navigator images
 * Now you can use the `ansible-navigator` with every user, the image is online and navigator is in userspace
 * Of course its nicer to have `ansible-navigator` installed with `rpm`. 
   But enterprise is taking, opensource is making :-)
+
+## pre define Ansible Navigator config system wide
+```
+sudo su -
+test -d /etc/ansible || mkdir /etc/ansible
+test -f /etc/ansible/ansible-navigator.yml || cat ansible-navigator.yml > /etc/ansible/ansible-navigator.yml
+echo "export ANSIBLE_NAVIGATOR_CONFIG=/etc/ansible/ansible-navigator.yml"
+```
+
+
+
 
